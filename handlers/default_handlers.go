@@ -14,10 +14,12 @@ func CloneHandler(w http.ResponseWriter, r *http.Request) {
 	path := html.EscapeString(r.URL.Path)
 	cloneMain := path[len(fmt.Sprintf("/%v/", routeConfig.GetClone())):len(path)]
 
-	fmt.Fprintf(w, "Source cloned [branch: %v]", cloneMain)
+	fmt.Fprintf(w, "Source cloned [branch: %v] \n", cloneMain)
 
 	if cloneMain == "" {
 		cloneMain = "main"
 	}
-	utils.CloneRepository(repoConfig.GetRepo(), cloneMain, repoConfig.GetTargetFolder())
+	commit := utils.CloneRepository(repoConfig.GetRepo(), cloneMain, repoConfig.GetTargetFolder())
+
+	fmt.Fprintf(w, "Last Commit [%s]", commit.ToString())
 }
