@@ -28,15 +28,25 @@ func NewCommitData(commitObject *object.Commit) *CommitData {
 
 	return commit
 }
+func BuildBranchPath(targetFolder string, branch string) string {
+	return fmt.Sprintf("_%s_%v", targetFolder, strings.ReplaceAll(branch, "/", "_"))
+}
+func CheckContentExists(target string, branch string) bool {
+	if _, err := os.Stat(BuildBranchPath(target, branch)); !os.IsNotExist(err) {
+		return true
+	} else {
+		return false
+	}
+}
 func CloneRepository(repoUrl string, branch string, targetFolder string, buildPath bool) *CommitData {
 	var targetFolderMultibranch string
 
 	if buildPath {
-		targetFolderMultibranch = fmt.Sprintf("_%s_%v", targetFolder, strings.ReplaceAll(branch, "/", "_"))
+		targetFolderMultibranch = BuildBranchPath(targetFolder, branch)
 	} else {
 		targetFolderMultibranch = targetFolder
 	}
-	
+
 	if _, err := os.Stat(targetFolderMultibranch); !os.IsNotExist(err) {
 		log.Println("Repository already exist. Will be pulled")
 		return PullRepository(repoUrl, targetFolderMultibranch, branch)
