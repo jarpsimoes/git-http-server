@@ -20,8 +20,11 @@ jobs:
         username: jarpsystems
         password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
 
+    - name: Add SHORT_SHA env property with commit short sha
+      run: echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
+
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag jarpsystems/git_http_server:$(date +%s)
+      run: docker build . --file Dockerfile --tag jarpsystems/git_http_server:v0.${SHORT_SHA}
     
     - name: Push Image
-      run: docker push jarpsystems/git_http_server:$(date +%s)
+      run: docker push jarpsystems/git_http_server:v0.${SHORT_SHA}
