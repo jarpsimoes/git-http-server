@@ -1,0 +1,16 @@
+name: Go
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+  - name: Docker login
+    uses: docker/login-action@v2.0.0
+    with:
+      username: jarpsystems
+      password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+    
