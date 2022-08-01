@@ -3,6 +3,7 @@ package utils
 import (
 	"fmt"
 	"log"
+	"os"
 	"sync"
 )
 
@@ -64,10 +65,10 @@ func GetRouteConfigInstance() *BaseRouteConfig {
 
 			// TODO Replace with Environment Variables
 			baseRouteConfigInstance = &BaseRouteConfig{
-				clonePath:   "_clone",
-				webhookPath: "_hook",
-				pullPath:    "_pull",
-				versionPath: "_version",
+				clonePath:   os.Getenv("PATH_CLONE"),
+				webhookPath: os.Getenv("PATH_WEBHOOK"),
+				pullPath:    os.Getenv("PATH_PULL"),
+				versionPath: os.Getenv("PATH_VERSION"),
 			}
 		} else {
 			log.Println("[BaseRouteConfig] Instance already created")
@@ -88,9 +89,9 @@ func GetRepositoryConfigInstance() *BaseRepositoryConfig {
 
 			// TODO Replace with Environment Variables
 			baseRepositoryConfigInstance = &BaseRepositoryConfig{
-				repoUrl:      "https://github.com/jarpsimoes/git-http-server.git",
-				branch:       "main",
-				targetFolder: "target-git",
+				repoUrl:      os.Getenv("REPO_URL"),
+				branch:       os.Getenv("REPO_BRANCH"),
+				targetFolder: os.Getenv("REPO_TARGET_FOLDER"),
 			}
 
 		} else {
