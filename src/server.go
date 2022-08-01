@@ -15,10 +15,13 @@ func main() {
 	repo := utils.GetRepositoryConfigInstance()
 
 	utils.CloneRepository(repo.GetRepo(), repo.GetBranch(), repo.GetTargetFolder(), true)
-	
+
 	http.HandleFunc(fmt.Sprintf("/%s/", routeConfig.GetClone()), handlers.CloneHandler)
+	http.HandleFunc(fmt.Sprintf("/%s/", routeConfig.GetPull()), handlers.PullHandler)
 	http.HandleFunc("/", handlers.StaticContentHandler)
+
 	port := os.Getenv("HTTP_PORT")
+
 	log.Printf("[STARTED] Listen port %s \n", port)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", port), nil))
 }

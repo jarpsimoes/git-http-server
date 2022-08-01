@@ -48,3 +48,12 @@ func CloneHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Source cloned [branch: %v] \n", cloneMain)
 	fmt.Fprintf(w, "Last Commit [%s]", commit.ToString())
 }
+func PullHandler(w http.ResponseWriter, r *http.Request) {
+	repoConfig := utils.GetRepositoryConfigInstance()
+	commit := utils.PullRepository(repoConfig.GetRepo(), utils.BuildBranchPath(repoConfig.GetTargetFolder(), repoConfig.GetBranch()), repoConfig.GetBranch())
+
+	w.WriteHeader(http.StatusAccepted)
+
+	fmt.Fprintf(w, "Branch %s pulled successfull \n", repoConfig.GetBranch())
+	fmt.Fprintf(w, "Last commit [%s]", commit.ToString())
+}

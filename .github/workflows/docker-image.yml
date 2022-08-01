@@ -28,3 +28,6 @@ jobs:
     
     - name: Push Image
       run: docker push jarpsimoes/git_http_server:v0.${SHORT_SHA}
+
+    - name: Push Latest
+      run: docker tag jarpsimoes/git_http_server:v0.${SHORT_SHA} jarpsimoes/git_http_server:latest && docker push jarpsimoes/git_http_server:latest
