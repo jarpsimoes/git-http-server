@@ -8,6 +8,8 @@ import (
 	"net/http"
 )
 
+// StaticContentHandler
+// Provide static content cloned from repository
 func StaticContentHandler(w http.ResponseWriter, r *http.Request) {
 	repoConfig := utils.GetRepositoryConfigInstance()
 	keys, ok := r.URL.Query()["_branch"]
@@ -26,6 +28,9 @@ func StaticContentHandler(w http.ResponseWriter, r *http.Request) {
 	fs := http.FileServer(http.Dir(basePath))
 	fs.ServeHTTP(w, r)
 }
+
+// CloneHandler
+// Clone source code from configured repository
 func CloneHandler(w http.ResponseWriter, r *http.Request) {
 	routeConfig := utils.GetRouteConfigInstance()
 	repoConfig := utils.GetRepositoryConfigInstance()
@@ -48,6 +53,9 @@ func CloneHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Source cloned [branch: %v] \n", cloneMain)
 	fmt.Fprintf(w, "Last Commit [%s]", commit.ToString())
 }
+
+// PullHandler
+// Update repository from configured repository
 func PullHandler(w http.ResponseWriter, r *http.Request) {
 	repoConfig := utils.GetRepositoryConfigInstance()
 	commit := utils.PullRepository(repoConfig.GetRepo(), utils.BuildBranchPath(repoConfig.GetTargetFolder(), repoConfig.GetBranch()), repoConfig.GetBranch())
