@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	"github.com/go-git/go-git/v5/plumbing/transport/http"
 	"log"
 	"os"
 	"sync"
@@ -21,9 +22,14 @@ type BaseRepositoryConfig struct {
 	branch       string
 	targetFolder string
 }
+type BasicAuthenticationMethod struct {
+	username      string
+	passwordToken string
+}
 
 var baseRouteConfigInstance *BaseRouteConfig
 var baseRepositoryConfigInstance *BaseRepositoryConfig
+var basicAuthenticationMethod *BasicAuthenticationMethod
 
 func (brc BaseRouteConfig) Show() string {
 
@@ -54,6 +60,15 @@ func (brc BaseRepositoryConfig) GetBranch() string {
 }
 func (brc BaseRepositoryConfig) GetTargetFolder() string {
 	return brc.targetFolder
+}
+func (bam BasicAuthenticationMethod) Show() string {
+	return fmt.Sprintf("username=%v, password=******", bam.username)
+}
+func (bam BasicAuthenticationMethod) GetAuth() http.BasicAuth {
+	return http.BasicAuth{
+		Username: bam.username,
+		Password: bam.passwordToken,
+	}
 }
 func GetRouteConfigInstance() *BaseRouteConfig {
 	if baseRouteConfigInstance == nil {
@@ -102,4 +117,26 @@ func GetRepositoryConfigInstance() *BaseRepositoryConfig {
 	}
 	log.Println(BaseRepositoryConfig.Show(*baseRepositoryConfigInstance))
 	return baseRepositoryConfigInstance
+}
+func GetBasicAuthenticationMethodInstance() *BasicAuthenticationMethod {
+	if basicAuthenticationMethod == nil {
+		lock.Lock()
+		defer lock.Unlock()
+
+		if basicAuthenticationMethod == nil {
+			log.Println("[BasicAuthenticationMethod] Creating new instance")
+
+			basicAuthenticationMethod = &BasicAuthenticationMethod{
+				username:      os.Getenv("REPO_USERNAME"),
+				passwordToken: os.Getenv("REPO_PASSWORD"),
+			}
+		} else {
+			log.Println("[BasicAuthenticationMethod] Instance already created")
+		}
+	} else {
+		log.Println("[BasicAuthenticationMethod] Instance already created")
+	}
+
+	log.Println(BasicAuthenticationMethod.Show(*basicAuthenticationMethod))
+	return basicAuthenticationMethod
 }

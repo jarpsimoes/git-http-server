@@ -19,6 +19,7 @@ type CommitData struct {
 func (cd CommitData) ToString() string {
 	return fmt.Sprintf("commit=%s, author=%s, message=%s", cd.hash, cd.author, cd.message)
 }
+
 func NewCommitData(commitObject *object.Commit) *CommitData {
 
 	commit := new(CommitData)
