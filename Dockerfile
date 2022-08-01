@@ -2,7 +2,7 @@ FROM golang:1.18-bullseye as builder
 
 ENV APP_HOME /go/src/server
 
-WORKDIR "$APP_HOME"
+WORKDIR ${APP_HOME}
 
 COPY ./src .
 
