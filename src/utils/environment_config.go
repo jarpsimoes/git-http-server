@@ -87,7 +87,6 @@ func GetRepositoryConfigInstance() *BaseRepositoryConfig {
 		if baseRepositoryConfigInstance == nil {
 			log.Println("[BaseRepositoryConfigInstance] Creating new instance")
 
-			// TODO Replace with Environment Variables
 			baseRepositoryConfigInstance = &BaseRepositoryConfig{
 				repoUrl:      os.Getenv("REPO_URL"),
 				branch:       os.Getenv("REPO_BRANCH"),
