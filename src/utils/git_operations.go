@@ -5,6 +5,7 @@ import (
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/go-git/go-git/v5/plumbing/object"
+	"github.com/go-git/go-git/v5/plumbing/transport/http"
 	"log"
 	"os"
 	"strings"
@@ -53,7 +54,15 @@ func CloneRepository(repoUrl string, branch string, targetFolder string, buildPa
 		return PullRepository(repoUrl, targetFolderMultibranch, branch)
 	}
 
+	auth := GetBasicAuthenticationMethodInstance()
+	var authResult http.BasicAuth
+
+	if auth.BasicAuthAvailable() {
+		authResult = auth.GetAuth()
+	}
+
 	r, err := git.PlainClone(targetFolderMultibranch, false, &git.CloneOptions{
+		Auth:          &authResult,
 		URL:           repoUrl,
 		ReferenceName: plumbing.ReferenceName(fmt.Sprintf("refs/heads/%s", branch)),
 	})

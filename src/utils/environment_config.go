@@ -64,6 +64,9 @@ func (brc BaseRepositoryConfig) GetTargetFolder() string {
 func (bam BasicAuthenticationMethod) Show() string {
 	return fmt.Sprintf("username=%v, password=******", bam.username)
 }
+func (bam BasicAuthenticationMethod) BasicAuthAvailable() bool {
+	return bam.username != "" && bam.passwordToken != ""
+}
 func (bam BasicAuthenticationMethod) GetAuth() http.BasicAuth {
 	return http.BasicAuth{
 		Username: bam.username,
