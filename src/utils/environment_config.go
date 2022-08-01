@@ -88,7 +88,7 @@ func GetRepositoryConfigInstance() *BaseRepositoryConfig {
 
 			// TODO Replace with Environment Variables
 			baseRepositoryConfigInstance = &BaseRepositoryConfig{
-				repoUrl:      "https://github.com/jarpsimoes/ansible-configure-http-server.git",
+				repoUrl:      "https://github.com/jarpsimoes/git-http-server.git",
 				branch:       "main",
 				targetFolder: "target-git",
 			}
