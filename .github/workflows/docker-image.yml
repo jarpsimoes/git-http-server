@@ -13,21 +13,36 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Docker Login
-      uses: docker/login-action@v2.0.0
-      with:
-        username: jarpsimoes
-        password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
 
-    - name: Add SHORT_SHA env property with commit short sha
-      run: echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
+      - uses: actions/checkout@v3
+      - name: Codacy Coverage Reporter
+        uses: codacy/codacy-coverage-reporter-action@v1.3.0
+        with:
+          # API project token to retrieve your remote Codacy configuration for the project being analyzed
+          project-token: ${{ secrets.CODACY_TOKEN }}
+          # API account token to retrieve your remote Codacy configuration for the project being analyzed
+          api-token: ${{ secrets.CODACY_TOKEN }}
+          # Optional comma separated list of coverage reports to send to Codacy
+          #coverage-reports: # optional, default is
+          # Optionally force associating a language with your coverage report
+          language: go
+          # Optionally force using a specific coverage report parser
+          # force-coverage-parser: # optional
 
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag jarpsimoes/git_http_server:v0.${SHORT_SHA}
-    
-    - name: Push Image
-      run: docker push jarpsimoes/git_http_server:v0.${SHORT_SHA}
+      - name: Docker Login
+        uses: docker/login-action@v2.0.0
+        with:
+          username: jarpsimoes
+          password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
 
-    - name: Push Latest
-      run: docker tag jarpsimoes/git_http_server:v0.${SHORT_SHA} jarpsimoes/git_http_server:latest && docker push jarpsimoes/git_http_server:latest
+      - name: Add SHORT_SHA env property with commit short sha
+        run: echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
+
+      - name: Build the Docker image
+        run: docker build . --file Dockerfile --tag jarpsimoes/git_http_server:v0.${SHORT_SHA}
+
+      - name: Push Image
+        run: docker push jarpsimoes/git_http_server:v0.${SHORT_SHA}
+
+      - name: Push Latest
+        run: docker tag jarpsimoes/git_http_server:v0.${SHORT_SHA} jarpsimoes/git_http_server:latest && docker push jarpsimoes/git_http_server:latest
