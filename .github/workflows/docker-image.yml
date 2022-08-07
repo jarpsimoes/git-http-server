@@ -11,32 +11,32 @@ env:
   ACCESS_USERNAME: html_sample
   CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_TOKEN }}
 jobs:
-
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Go
+        if: success()
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.17.x
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Calc coverage
+        run: |
+          cd src
+          go test -v -covermode=count -coverprofile=../coverage.out
+      - name: Convert coverage.out to coverage.lcov
+        uses: jandelgado/gcov2lcov-action@v1.0.6
+      - name: Coveralls
+        uses: coverallsapp/github-action@v1.1.2
+        with:
+          github-token: ${{ secrets.CODECOV_TOKEN }}
+          path-to-lcov: coverage.lcov
   build:
 
     runs-on: ubuntu-latest
 
     steps:
-
-      - uses: actions/checkout@v3
-      - name: Codacy tests
-        run: cd src && go test ./... -cover -coverprofile=../coverage_.out && go tool cover -func=../coverage_.out -o=../coverage.out
-      - name: Send reports
-        run: bash <(curl -Ls https://coverage.codacy.com/get.sh) report --force-coverage-parser go -r coverage_.out
-      #- name: Codacy Coverage Reporter
-      #  uses: codacy/codacy-coverage-reporter-action@v1.3.0
-      #  with:
-          # API project token to retrieve your remote Codacy configuration for the project being analyzed
-      #    project-token: ${{ secrets.CODACY_TOKEN }}
-          # API account token to retrieve your remote Codacy configuration for the project being analyzed
-      #    api-token: ${{ secrets.CODACY_TOKEN }}
-          # Optional comma separated list of coverage reports to send to Codacy
-      #    coverage-reports: coverage.out # optional, default is
-          # Optionally force associating a language with your coverage report
-      #    language: go
-          # Optionally force using a specific coverage report parser
-      #    force-coverage-parser: go # optional
-
       - name: Docker Login
         uses: docker/login-action@v2.0.0
         with:
