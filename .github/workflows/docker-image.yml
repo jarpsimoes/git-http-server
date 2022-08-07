@@ -10,6 +10,7 @@ env:
   ACCESS_TOKEN: ${{ secrets.GIT_ACCESS_TOKEN_TESTS }}
   ACCESS_USERNAME: html_sample
   CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_TOKEN }}
+  COVERALLS_REPO_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 jobs:
   coverage:
     runs-on: ubuntu-latest
