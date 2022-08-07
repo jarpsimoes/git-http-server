@@ -33,6 +33,7 @@ jobs:
         with:
           github-token: ${{ secrets.CODECOV_TOKEN }}
           path-to-lcov: coverage.lcov
+          working-directory: src
   build:
 
     runs-on: ubuntu-latest
