@@ -1,14 +1,17 @@
 # GIT-HttpServer
 
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/b0fde431e29c4e3ba47560a973279fef)](https://www.codacy.com/gh/jarpsimoes/git-http-server/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=jarpsimoes/git-http-server&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/b0fde431e29c4e3ba47560a973279fef)](https://www.codacy.com/gh/jarpsimoes/git-http-server/dashboard?utm_source=github.com&utm_medium=referral&utm_content=jarpsimoes/git-http-server&utm_campaign=Badge_Coverage)
+
 This is a simple HTTP server to provide "NoOps" to the frontend applications.
 The content must be provided from a git repository. 
 
-Every times its application started, the configured repository is cloned on selected 
-branch defined in variable REPO_BRANCH and can be pulled new version on defined PATH_PULL.
+Every times an application is started, the configured repository is cloned on 
+selected branch (in variable REPO_BRANCH) and can be pulled new version on defined PATH_PULL.
 
-- Git Authentication [WIP]
-- Cron job to preform content update [WIP]
-- 
+## Authentication Methods
+
+The GIT-HttpServer only support basic authentication on repositories by protocol HTTPS
 
 ## Configuration
 
