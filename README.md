@@ -2,6 +2,7 @@
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/b0fde431e29c4e3ba47560a973279fef)](https://www.codacy.com/gh/jarpsimoes/git-http-server/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=jarpsimoes/git-http-server&amp;utm_campaign=Badge_Grade)
 [![codecov](https://codecov.io/gh/jarpsimoes/git-http-server/branch/main/graph/badge.svg?token=CCRRRCYLM1)](https://codecov.io/gh/jarpsimoes/git-http-server)
+
 This is a simple HTTP server to provide "NoOps" to the frontend applications.
 The content must be provided from a git repository. 
 
