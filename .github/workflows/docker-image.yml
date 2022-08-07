@@ -33,13 +33,12 @@ jobs:
         uses: coverallsapp/github-action@v1.1.2
         with:
           github-token: ${{ secrets.CODECOV_TOKEN }}
-          path-to-lcov: coverage.lcov
-          base-path: src
+          path-to-lcov: src/coverage.lcov
           
   build:
 
     runs-on: ubuntu-latest
-
+    needs: coverage
     steps:
       - name: Docker Login
         uses: docker/login-action@v2.0.0
