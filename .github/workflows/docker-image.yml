@@ -33,7 +33,7 @@ jobs:
           # Optionally force associating a language with your coverage report
           language: go
           # Optionally force using a specific coverage report parser
-          force-coverage-parser: true # optional
+          force-coverage-parser: go # optional
 
       - name: Docker Login
         uses: docker/login-action@v2.0.0
