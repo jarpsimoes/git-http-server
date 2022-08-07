@@ -9,6 +9,7 @@ on:
 env:
   ACCESS_TOKEN: ${{ secrets.GIT_ACCESS_TOKEN_TESTS }}
   ACCESS_USERNAME: html_sample
+  CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_TOKEN }}
 jobs:
 
   build:
@@ -28,7 +29,7 @@ jobs:
           # API account token to retrieve your remote Codacy configuration for the project being analyzed
           api-token: ${{ secrets.CODACY_TOKEN }}
           # Optional comma separated list of coverage reports to send to Codacy
-          coverage-reports: src/cover.out # optional, default is
+          #coverage-reports: src/cover.out # optional, default is
           # Optionally force associating a language with your coverage report
           language: go
           # Optionally force using a specific coverage report parser
