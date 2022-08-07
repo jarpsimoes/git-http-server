@@ -31,7 +31,7 @@ jobs:
           # Optional comma separated list of coverage reports to send to Codacy
           coverage-reports: src/coverage.out # optional, default is
           # Optionally force associating a language with your coverage report
-          language: go
+          # language: go
           # Optionally force using a specific coverage report parser
           # force-coverage-parser: # optional
 
