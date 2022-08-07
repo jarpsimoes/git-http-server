@@ -30,13 +30,13 @@ jobs:
         uses: jandelgado/gcov2lcov-action@v1.0.6
         with:
           working-directory: src
-      - name: Coveralls
-        uses: coverallsapp/github-action@v1.1.2
+      - name: Codecov Reports
+        uses: codecov/codecov-action@v3.1.0
         with:
-          github-token: ${{ secrets.CODECOV_TOKEN }}
-          path-to-lcov: src/coverage.lcov
-          base-path: src
-          
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: src/coverage.lcov
+          fail_ci_if_error: true 
+                  
   build:
 
     runs-on: ubuntu-latest
