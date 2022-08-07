@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env:
+  ACCESS_TOKEN: ${{ secrets.GIT_ACCESS_TOKEN_TESTS }}
+  ACCESS_USERNAME: html_sample
 jobs:
 
   build:
@@ -15,6 +18,8 @@ jobs:
     steps:
 
       - uses: actions/checkout@v3
+      - name: Codacy tests
+        run: cd src && go test ./... -cover -coverprofile cover.out
       - name: Codacy Coverage Reporter
         uses: codacy/codacy-coverage-reporter-action@v1.3.0
         with:
@@ -23,7 +28,7 @@ jobs:
           # API account token to retrieve your remote Codacy configuration for the project being analyzed
           api-token: ${{ secrets.CODACY_TOKEN }}
           # Optional comma separated list of coverage reports to send to Codacy
-          #coverage-reports: # optional, default is
+          coverage-reports: cover.out # optional, default is
           # Optionally force associating a language with your coverage report
           language: go
           # Optionally force using a specific coverage report parser
