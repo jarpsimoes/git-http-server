@@ -6,31 +6,21 @@ import (
 	"testing"
 )
 
+type testsData struct {
+	title        string
+	repoUrl      string
+	branch       string
+	targetFolder string
+}
+
 func TestCloneRepository(t *testing.T) {
 	token := os.Getenv("ACCESS_TOKEN")
 	username := os.Getenv("ACCESS_USERNAME")
 
-	type testsData struct {
-		title        string
-		repoUrl      string
-		branch       string
-		targetFolder string
-	}
-
 	var data [2]testsData
 
-	data[0] = testsData{
-		title:        "Test real repo without auth",
-		repoUrl:      "https://github.com/jarpsimoes/ansible-configure-http-server",
-		branch:       "main",
-		targetFolder: "test1",
-	}
-	data[1] = testsData{
-		title:        "Test real repo with PAT auth - Github",
-		repoUrl:      "https://github.com/jarpsimoes/html_sample.git",
-		branch:       "main",
-		targetFolder: "test2",
-	}
+	data[0] = getPublicRepo()
+	data[1] = getRepoAuth()
 
 	for i, s := range data {
 
@@ -43,6 +33,10 @@ func TestCloneRepository(t *testing.T) {
 
 		result := CloneRepository(s.repoUrl, s.branch, s.targetFolder, false)
 		assert.NotNil(t, result)
+
+		assert.NotEmpty(t, result.hash)
+		assert.NotEmpty(t, result.author)
+
 	}
 
 	for _, s := range data {
@@ -50,3 +44,50 @@ func TestCloneRepository(t *testing.T) {
 	}
 
 }
+
+func TestCheckoutRepository(t *testing.T) {
+	token := os.Getenv("ACCESS_TOKEN")
+	username := os.Getenv("ACCESS_USERNAME")
+
+	data := getRepoAuth()
+
+	authInstance := GetBasicAuthenticationMethodInstance()
+
+	authInstance.username = username
+	authInstance.passwordToken = token
+
+	result := CheckoutRepository(data.repoUrl, data.branch, data.targetFolder)
+	assert.NotNil(t, result)
+
+	assert.NotEmpty(t, result.hash)
+	assert.NotEmpty(t, result.author)
+	os.RemoveAll(data.targetFolder)
+}
+func TestPullRepository(t *testing.T) {
+
+	data := getRepoAuth()
+
+	cloneResult := CloneRepository(data.repoUrl, data.branch, data.targetFolder, false)
+	assert.NotNil(t, cloneResult)
+
+	pullResult := PullRepository(data.repoUrl, data.targetFolder, data.branch)
+	assert.NotNil(t, pullResult)
+	
+}
+func getPublicRepo() testsData {
+	return testsData{
+		title:        "Test real repo without auth",
+		repoUrl:      "https://github.com/jarpsimoes/ansible-configure-http-server",
+		branch:       "main",
+		targetFolder: "test1",
+	}
+}
+func getRepoAuth() testsData {
+	return testsData{
+		title:        "Test real repo with PAT auth - Github",
+		repoUrl:      "https://github.com/jarpsimoes/html_sample.git",
+		branch:       "main",
+		targetFolder: "test2",
+	}
+}
+

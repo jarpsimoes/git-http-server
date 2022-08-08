@@ -40,6 +40,9 @@ func CheckContentExists(target string, branch string) bool {
 		return false
 	}
 }
+
+// CloneRepository
+// Git operation  - git clone
 func CloneRepository(repoUrl string, branch string, targetFolder string, buildPath bool) *CommitData {
 	var targetFolderMultibranch string
 
@@ -88,6 +91,9 @@ func getCommit(repository *git.Repository) *CommitData {
 	return commitData
 
 }
+
+// CheckoutRepository
+// Git operation - git checkout
 func CheckoutRepository(repoUrl string, target string, branch string) *CommitData {
 
 	if _, err := os.Stat(target); !os.IsNotExist(err) {
@@ -96,6 +102,9 @@ func CheckoutRepository(repoUrl string, target string, branch string) *CommitDat
 
 	return CloneRepository(repoUrl, branch, target, false)
 }
+
+// PullRepository
+// Git operation - git pull
 func PullRepository(repoUrl string, target string, branch string) *CommitData {
 	po, err := git.PlainOpen(target)
 

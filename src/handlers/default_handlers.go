@@ -30,7 +30,7 @@ func StaticContentHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // CloneHandler
-// Clone source code from configured repository
+// Handler to clone source code from configured repository
 func CloneHandler(w http.ResponseWriter, r *http.Request) {
 	routeConfig := utils.GetRouteConfigInstance()
 	repoConfig := utils.GetRepositoryConfigInstance()
@@ -55,7 +55,7 @@ func CloneHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // PullHandler
-// Update repository from configured repository
+// Handler to update repository from configured repository
 func PullHandler(w http.ResponseWriter, r *http.Request) {
 	repoConfig := utils.GetRepositoryConfigInstance()
 	commit := utils.PullRepository(repoConfig.GetRepo(), utils.BuildBranchPath(repoConfig.GetTargetFolder(), repoConfig.GetBranch()), repoConfig.GetBranch())
