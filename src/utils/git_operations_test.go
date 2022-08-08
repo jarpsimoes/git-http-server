@@ -56,7 +56,7 @@ func TestCheckoutRepository(t *testing.T) {
 	authInstance.username = username
 	authInstance.passwordToken = token
 
-	result := CheckoutRepository(data.repoUrl, data.branch, data.targetFolder)
+	result := CheckoutRepository(data.repoUrl, data.targetFolder, data.branch)
 	assert.NotNil(t, result)
 
 	assert.NotEmpty(t, result.hash)
@@ -67,12 +67,22 @@ func TestPullRepository(t *testing.T) {
 
 	data := getRepoAuth()
 
+	token := os.Getenv("ACCESS_TOKEN")
+	username := os.Getenv("ACCESS_USERNAME")
+
+	authInstance := GetBasicAuthenticationMethodInstance()
+
+	authInstance.username = username
+	authInstance.passwordToken = token
+
 	cloneResult := CloneRepository(data.repoUrl, data.branch, data.targetFolder, false)
 	assert.NotNil(t, cloneResult)
 
 	pullResult := PullRepository(data.repoUrl, data.targetFolder, data.branch)
 	assert.NotNil(t, pullResult)
-	
+
+	os.RemoveAll(data.targetFolder)
+
 }
 func getPublicRepo() testsData {
 	return testsData{
@@ -90,4 +100,3 @@ func getRepoAuth() testsData {
 		targetFolder: "test2",
 	}
 }
-

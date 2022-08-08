@@ -30,6 +30,9 @@ func NewCommitData(commitObject *object.Commit) *CommitData {
 
 	return commit
 }
+
+// BuildBranchPath
+// Build path to clone repositories
 func BuildBranchPath(targetFolder string, branch string) string {
 	return fmt.Sprintf("_%s_%v", targetFolder, strings.ReplaceAll(branch, "/", "_"))
 }
