@@ -23,7 +23,7 @@ ENV REPO_URL "https://github.com/jarpsimoes/git-http-server.git"
 ENV HTTP_PORT 8081
 
 RUN mkdir -p ${APP_HOME}
-WORKDIR "$APP_HOME"
+WORKDIR ${APP_HOME}
 
 COPY --from=builder "$APP_HOME"/server $APP_HOME
 
