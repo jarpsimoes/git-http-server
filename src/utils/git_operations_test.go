@@ -21,7 +21,7 @@ func TestCloneRepository(t *testing.T) {
 
 	data[0] = testsData{
 		title:        "Test real repo without auth",
-		repoUrl:      "https://github.com/jarpsimoes/git-http-server.git",
+		repoUrl:      "https://github.com/jarpsimoes/ansible-configure-http-server",
 		branch:       "main",
 		targetFolder: "test1",
 	}
@@ -38,10 +38,15 @@ func TestCloneRepository(t *testing.T) {
 			authInstance := GetBasicAuthenticationMethodInstance()
 			authInstance.username = username
 			authInstance.passwordToken = token
+
 		}
+
 		result := CloneRepository(s.repoUrl, s.branch, s.targetFolder, false)
 		assert.NotNil(t, result)
+	}
 
+	for _, s := range data {
+		os.RemoveAll(s.targetFolder)
 	}
 
 }
