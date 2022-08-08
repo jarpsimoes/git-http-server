@@ -31,8 +31,9 @@ func NewCommitData(commitObject *object.Commit) *CommitData {
 	return commit
 }
 
-// BuildBranchPath
-// Build path to clone repositories
+// BuildBranchPath it's path builder as target to clone repositories
+// Should be defined as parameter the targetFolder name and branch
+// Return pattern as _[target_folder]_[target_branch] without slash's
 func BuildBranchPath(targetFolder string, branch string) string {
 	return fmt.Sprintf("_%s_%v", targetFolder, strings.ReplaceAll(branch, "/", "_"))
 }

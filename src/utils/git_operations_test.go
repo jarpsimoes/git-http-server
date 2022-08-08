@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"github.com/stretchr/testify/assert"
 	"os"
 	"testing"
@@ -31,7 +32,7 @@ func TestCloneRepository(t *testing.T) {
 
 		}
 
-		result := CloneRepository(s.repoUrl, s.branch, s.targetFolder, false)
+		result := CloneRepository(s.repoUrl, s.branch, s.targetFolder, true)
 		assert.NotNil(t, result)
 
 		assert.NotEmpty(t, result.hash)
@@ -40,11 +41,15 @@ func TestCloneRepository(t *testing.T) {
 	}
 
 	for _, s := range data {
-		os.RemoveAll(s.targetFolder)
+		os.RemoveAll(fmt.Sprintf("_%s_%s", s.targetFolder, s.branch))
 	}
 
 }
+func TestBuildBranchPath(t *testing.T) {
+	folderPath := BuildBranchPath("test", "feature/test")
 
+	assert.Equalf(t, folderPath, "_test_feature_test", "Check build path result")
+}
 func TestCheckoutRepository(t *testing.T) {
 	token := os.Getenv("ACCESS_TOKEN")
 	username := os.Getenv("ACCESS_USERNAME")
@@ -61,6 +66,11 @@ func TestCheckoutRepository(t *testing.T) {
 
 	assert.NotEmpty(t, result.hash)
 	assert.NotEmpty(t, result.author)
+
+	assert.Containsf(t, result.ToString(), "commit=", "Contains commit")
+	assert.Containsf(t, result.ToString(), "author=", "Contains commit")
+	assert.Containsf(t, result.ToString(), "message=", "Contains commit")
+
 	os.RemoveAll(data.targetFolder)
 }
 func TestPullRepository(t *testing.T) {
