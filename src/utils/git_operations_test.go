@@ -91,6 +91,8 @@ func TestPullRepository(t *testing.T) {
 	pullResult := PullRepository(data.repoUrl, data.targetFolder, data.branch)
 	assert.NotNil(t, pullResult)
 
+	pullTestResult := PullRepository(data.repoUrl, data.targetFolder, "feature/test_feature")
+	assert.NotNil(t, pullTestResult)
 	os.RemoveAll(data.targetFolder)
 
 }

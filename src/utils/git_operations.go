@@ -120,7 +120,10 @@ func PullRepository(repoUrl string, target string, branch string) *CommitData {
 
 	ErrorCheck(errOpen)
 
-	if fmt.Sprintf("/refs/heads/%s", h.Name()) != branch {
+	requestedBranch := fmt.Sprintf("refs/heads/%s", branch)
+	presentBranch := fmt.Sprintf("%s", h.Name())
+
+	if presentBranch != requestedBranch {
 		log.Printf("Checkout: [%s]", branch)
 		return CheckoutRepository(repoUrl, target, branch)
 	}
