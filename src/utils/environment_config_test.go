@@ -50,11 +50,11 @@ func TestGetBasicAuthenticationMethodInstance(t *testing.T) {
 
 	basicAuthInstance := GetBasicAuthenticationMethodInstance()
 
-	assert.Equal(t, "test1", basicAuthInstance.GetAuth().Username)
-	assert.Equal(t, "testPwd", basicAuthInstance.GetAuth().Password)
+	assert.Equal(t, os.Getenv("ACCESS_USERNAME"), basicAuthInstance.GetAuth().Username)
+	assert.Equal(t, os.Getenv("ACCESS_TOKEN"), basicAuthInstance.GetAuth().Password)
 
 	basicAuthInstance1 := GetBasicAuthenticationMethodInstance()
 
-	assert.Equal(t, "test1", basicAuthInstance1.GetAuth().Username)
-	assert.Equal(t, "testPwd", basicAuthInstance1.GetAuth().Password)
+	assert.Equal(t, os.Getenv("ACCESS_USERNAME"), basicAuthInstance1.GetAuth().Username)
+	assert.Equal(t, os.Getenv("ACCESS_TOKEN"), basicAuthInstance1.GetAuth().Password)
 }
