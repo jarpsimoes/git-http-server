@@ -11,16 +11,20 @@ import (
 	"strings"
 )
 
+// CommitData it's a class to wrap commit information
 type CommitData struct {
 	author  string
 	hash    string
 	message string
 }
 
+// ToString it's a method to show object data as string
 func (cd CommitData) ToString() string {
 	return fmt.Sprintf("commit=%s, author=%s, message=%s", cd.hash, cd.author, cd.message)
 }
 
+// NewCommitData it's a function to create CommitData
+// object from git commit
 func NewCommitData(commitObject *object.Commit) *CommitData {
 
 	commit := new(CommitData)
@@ -37,6 +41,9 @@ func NewCommitData(commitObject *object.Commit) *CommitData {
 func BuildBranchPath(targetFolder string, branch string) string {
 	return fmt.Sprintf("_%s_%v", targetFolder, strings.ReplaceAll(branch, "/", "_"))
 }
+
+// CheckContentExists it's function to check if exists content
+// inside target folder
 func CheckContentExists(target string, branch string) bool {
 	if _, err := os.Stat(BuildBranchPath(target, branch)); !os.IsNotExist(err) {
 		return true
