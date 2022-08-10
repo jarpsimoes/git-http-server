@@ -45,8 +45,8 @@ func TestGetRepositoryConfigInstance(t *testing.T) {
 	assert.Equal(t, "test1", repositoryConfigInstance1.GetTargetFolder(), "Check repo url")
 }
 func TestGetBasicAuthenticationMethodInstance(t *testing.T) {
-	os.Setenv("REPO_USERNAME", "test1")
-	os.Setenv("REPO_PASSWORD", "testPwd")
+	os.Setenv("REPO_USERNAME", os.Getenv("ACCESS_USERNAME"))
+	os.Setenv("REPO_PASSWORD", os.Getenv("ACCESS_TOKEN"))
 
 	basicAuthInstance := GetBasicAuthenticationMethodInstance()
 
