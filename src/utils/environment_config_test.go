@@ -20,6 +20,12 @@ func TestGetRouteConfigInstance(t *testing.T) {
 	assert.Equal(t, "_pull1", routeConfigInstance.GetPull(), "Check pull path")
 	assert.Equal(t, "_version1", routeConfigInstance.GetVersion(), "Check version path")
 
+	routeConfigInstance1 := GetRouteConfigInstance()
+
+	assert.Equal(t, "_clone1", routeConfigInstance1.GetClone(), "Check clone path")
+	assert.Equal(t, "_hook1", routeConfigInstance1.GetWebHook(), "Check Webhook path")
+	assert.Equal(t, "_pull1", routeConfigInstance1.GetPull(), "Check pull path")
+	assert.Equal(t, "_version1", routeConfigInstance1.GetVersion(), "Check version path")
 }
 func TestGetRepositoryConfigInstance(t *testing.T) {
 	os.Setenv("REPO_URL", "https://test.com/repo.git")
@@ -32,4 +38,23 @@ func TestGetRepositoryConfigInstance(t *testing.T) {
 	assert.Equal(t, "main", repositoryConfigInstance.GetBranch(), "Check repo url")
 	assert.Equal(t, "test1", repositoryConfigInstance.GetTargetFolder(), "Check repo url")
 
+	repositoryConfigInstance1 := GetRepositoryConfigInstance()
+
+	assert.Equal(t, "https://test.com/repo.git", repositoryConfigInstance1.GetRepo(), "Check repo url")
+	assert.Equal(t, "main", repositoryConfigInstance1.GetBranch(), "Check repo url")
+	assert.Equal(t, "test1", repositoryConfigInstance1.GetTargetFolder(), "Check repo url")
+}
+func TestGetBasicAuthenticationMethodInstance(t *testing.T) {
+	os.Setenv("REPO_USERNAME", "test1")
+	os.Setenv("REPO_PASSWORD", "testPwd")
+
+	basicAuthInstance := GetBasicAuthenticationMethodInstance()
+
+	assert.Equal(t, "test1", basicAuthInstance.GetAuth().Username)
+	assert.Equal(t, "testPwd", basicAuthInstance.GetAuth().Password)
+
+	basicAuthInstance1 := GetBasicAuthenticationMethodInstance()
+
+	assert.Equal(t, "test1", basicAuthInstance1.GetAuth().Username)
+	assert.Equal(t, "testPwd", basicAuthInstance1.GetAuth().Password)
 }

@@ -22,7 +22,7 @@ type BaseRouteConfig struct {
 // BaseRepositoryConfig it's a struct to represent repository configuration
 // Singleton
 type BaseRepositoryConfig struct {
-	repoUrl      string
+	repoURL      string
 	branch       string
 	targetFolder string
 }
@@ -66,12 +66,12 @@ func (brc BaseRouteConfig) GetVersion() string {
 
 // Show (BaseRepositoryConfig) it's a function print strut content as string
 func (brc BaseRepositoryConfig) Show() string {
-	return fmt.Sprintf("repository=%v, branch=%v", brc.repoUrl, brc.branch)
+	return fmt.Sprintf("repository=%v, branch=%v", brc.repoURL, brc.branch)
 }
 
 // GetRepo (BaseRouteConfig) it's a method to get configured repository
 func (brc BaseRepositoryConfig) GetRepo() string {
-	return brc.repoUrl
+	return brc.repoURL
 }
 
 // GetBranch (BaseRepositoryConfig) it's a method to get configured default branch
@@ -139,7 +139,7 @@ func GetRepositoryConfigInstance() *BaseRepositoryConfig {
 			log.Println("[BaseRepositoryConfigInstance] Creating new instance")
 
 			baseRepositoryConfigInstance = &BaseRepositoryConfig{
-				repoUrl:      os.Getenv("REPO_URL"),
+				repoURL:      os.Getenv("REPO_URL"),
 				branch:       os.Getenv("REPO_BRANCH"),
 				targetFolder: os.Getenv("REPO_TARGET_FOLDER"),
 			}
