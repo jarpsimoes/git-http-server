@@ -70,7 +70,7 @@ func TestGetHealthCheckControlInstance(t *testing.T) {
 	assert.Equal(t, healthCheckControl.Status, true)
 	assert.Equal(t, healthCheckControl.IsHealthy(), true)
 
-	jsonContent := healthCheckControl.JsonHealthCheck()
+	jsonContent := healthCheckControl.JSONHealthCheck()
 
 	assert.Contains(t, jsonContent, "Status")
 	assert.Contains(t, jsonContent, healthCheckControl.StartTime)

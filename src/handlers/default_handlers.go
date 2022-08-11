@@ -68,7 +68,7 @@ func HealthCheckHandler(w http.ResponseWriter, r *http.Request) {
 	healthCheck := utils.GetHealthCheckControlInstance()
 
 	w.Header().Add("Content-Type", "application/json")
-	
+
 	if healthCheck.IsHealthy() {
 		w.WriteHeader(http.StatusOK)
 
@@ -76,5 +76,5 @@ func HealthCheckHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusExpectationFailed)
 	}
 
-	fmt.Fprintf(w, healthCheck.JsonHealthCheck())
+	fmt.Fprintf(w, healthCheck.JSONHealthCheck())
 }

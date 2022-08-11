@@ -58,8 +58,8 @@ func (hcc *HealthCheckControl) UpdateState(status bool) {
 	healthCheckControl = hcc
 }
 
-// JsonHealthCheck [HealthCheckControl] it's a function to get heath check as a json string
-func (hcc HealthCheckControl) JsonHealthCheck() string {
+// JSONHealthCheck [HealthCheckControl] it's a function to get heath check as a json string
+func (hcc HealthCheckControl) JSONHealthCheck() string {
 	jsonContent, _ := json.Marshal(hcc)
 
 	return string(jsonContent)
