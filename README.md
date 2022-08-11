@@ -15,7 +15,7 @@ The GIT-HttpServer only support basic authentication on repositories by protocol
 
 ## Configuration
 
-#### Environment Variables
+### Environment Variables
 | Name               | Description                                              | Default                                           | Mandatory |
 |--------------------|----------------------------------------------------------|---------------------------------------------------|-----------|
 | PATH_CLONE         | Set clone path                                           | _clone                                            | Yes       |
@@ -31,16 +31,14 @@ The GIT-HttpServer only support basic authentication on repositories by protocol
 | HTTP_PORT          | Set port to expose content                               | 8081                                              | Yes       |
 
 
-
-
 ## Implementation
 
-#### Simple implementation
+### Simple implementation
 
-The simple implementation is based with minimal configuration
+The most simple implementation of git-http-server
 ```shell
 $ docker run \ 
-    -p 8080:8080 \
+    -p 8081:8081 \
     -e REPO_URL=[URL REPOSITORY] \
     -e REPO_BRANCH=[DEFAULT BRANCH] \
     jarpsimoes/git_http_server
@@ -55,14 +53,14 @@ Update Repository
 $ curl http://localhost:8080/_pull
 ````
 
-#### Implementation with Basic Authentication
+### Implementation with Basic Authentication
 
 The implementation with basic authentication can be used with username and password method, or PAT(Personal Access Token) method (like Gitlab Token).
 For the PAT approach the username is Token Identifier and Password is token.
 
 ```shell
 $ docker run \ 
-    -p 8080:8080 \
+    -p 8081:8081 \
     -e REPO_URL=[URL REPOSITORY] \
     -e REPO_BRANCH=[DEFAULT BRANCH] \
     -e REPO_USERNAME=[Token Identifier or Username] \
@@ -77,8 +75,54 @@ $ curl http://localhost:8080
 
 Update Repository
 ````shell
-$ curl http://localhost:8080/_pull
+$ curl http://localhost:8080/_health
 ````
 
-#### Kubernetes implementation
-TBD
+### Kubernetes implementation
+
+The git-http-server is Kubernetes Ready, can be deployed as simple deployment. See bellow an example of kubernetes deployment.
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-content-deployment
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: git-http-server-example-1
+  template:
+    metadata:
+      labels:
+        app: git-http-server-example-1
+    spec:
+      containers:
+        - ports:
+            - name: http
+              containerPort: 8081
+              protocol: TCP
+          resources:
+            limits: {}
+            requests: {}
+          env:
+            - name: REPO_URL
+              value: [REPOSITORY_URL]
+          name: git-http-server
+          image: jarpsimoes/git_http_server:v0.91749682
+          imagePullPolicy: Always
+          livenessProbe:
+            httpGet:
+              port: 8081
+              path: /_health
+            failureThreshold: 3
+            periodSeconds: 10
+          startupProbe:
+            httpGet:
+              port: 8081
+              path: /_health
+            failureThreshold: 3
+            periodSeconds: 10
+```
