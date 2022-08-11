@@ -1,11 +1,13 @@
 package utils
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/go-git/go-git/v5/plumbing/transport/http"
 	"log"
 	"os"
 	"sync"
+	"time"
 )
 
 var lock = &sync.Mutex{}
@@ -13,10 +15,11 @@ var lock = &sync.Mutex{}
 // BaseRouteConfig it's a struct to represent routes configuration
 // Singleton
 type BaseRouteConfig struct {
-	clonePath   string
-	webhookPath string
-	pullPath    string
-	versionPath string
+	clonePath          string
+	webhookPath        string
+	pullPath           string
+	versionPath        string
+	healthCheckControl string
 }
 
 // BaseRepositoryConfig it's a struct to represent repository configuration
@@ -34,9 +37,38 @@ type BasicAuthenticationMethod struct {
 	passwordToken string
 }
 
+// HealthCheckControl it's a struct to represent health check result
+type HealthCheckControl struct {
+	status           bool
+	port             string
+	startTime        string
+	statusUpdateTime string
+}
+
 var baseRouteConfigInstance *BaseRouteConfig
 var baseRepositoryConfigInstance *BaseRepositoryConfig
 var basicAuthenticationMethod *BasicAuthenticationMethod
+var healthCheckControl *HealthCheckControl
+
+// UpdateState [HealthCheckControl] it's a function to update status
+func (hcc *HealthCheckControl) UpdateState(status bool) {
+	hcc.status = status
+	hcc.statusUpdateTime = time.Now().String()
+
+	healthCheckControl = hcc
+}
+
+// JsonHealthCheck [HealthCheckControl] it's a function to get heath check as a json string
+func (hcc HealthCheckControl) JsonHealthCheck() string {
+	jsonContent, _ := json.Marshal(hcc)
+
+	return string(jsonContent)
+}
+
+// IsHealthy [HealthCheckControl] it's a function to check if server is healthy
+func (hcc HealthCheckControl) IsHealthy() bool {
+	return hcc.status
+}
 
 // Show (BaseRouteConfig) it's a function print strut content as string
 func (brc BaseRouteConfig) Show() string {
@@ -62,6 +94,11 @@ func (brc BaseRouteConfig) GetPull() string {
 // GetVersion (BaseRouteConfig) it's a method to get Version path configured
 func (brc BaseRouteConfig) GetVersion() string {
 	return brc.versionPath
+}
+
+// GetHealthCheck (BaseRouteConfig) it's a method to get Version path configured
+func (brc BaseRouteConfig) GetHealthCheck() string {
+	return brc.healthCheckControl
 }
 
 // Show (BaseRepositoryConfig) it's a function print strut content as string
@@ -114,18 +151,14 @@ func GetRouteConfigInstance() *BaseRouteConfig {
 
 			// TODO Replace with Environment Variables
 			baseRouteConfigInstance = &BaseRouteConfig{
-				clonePath:   os.Getenv("PATH_CLONE"),
-				webhookPath: os.Getenv("PATH_WEBHOOK"),
-				pullPath:    os.Getenv("PATH_PULL"),
-				versionPath: os.Getenv("PATH_VERSION"),
+				clonePath:          os.Getenv("PATH_CLONE"),
+				webhookPath:        os.Getenv("PATH_WEBHOOK"),
+				pullPath:           os.Getenv("PATH_PULL"),
+				versionPath:        os.Getenv("PATH_VERSION"),
+				healthCheckControl: os.Getenv("PATH_HEALTH"),
 			}
-		} else {
-			log.Println("[BaseRouteConfig] Instance already created")
 		}
-	} else {
-		log.Println("[BaseRouteConfig] Instance already created")
 	}
-	log.Println(BaseRouteConfig.Show(*baseRouteConfigInstance))
 	return baseRouteConfigInstance
 }
 
@@ -144,14 +177,9 @@ func GetRepositoryConfigInstance() *BaseRepositoryConfig {
 				targetFolder: os.Getenv("REPO_TARGET_FOLDER"),
 			}
 
-		} else {
-			log.Println("[BaseRepositoryConfigInstance] Instance already created")
 		}
-
-	} else {
-		log.Println("[BaseRepositoryConfigInstance] Instance already created")
 	}
-	log.Println(BaseRepositoryConfig.Show(*baseRepositoryConfigInstance))
+
 	return baseRepositoryConfigInstance
 }
 
@@ -168,13 +196,31 @@ func GetBasicAuthenticationMethodInstance() *BasicAuthenticationMethod {
 				username:      os.Getenv("REPO_USERNAME"),
 				passwordToken: os.Getenv("REPO_PASSWORD"),
 			}
-		} else {
-			log.Println("[BasicAuthenticationMethod] Instance already created")
 		}
-	} else {
-		log.Println("[BasicAuthenticationMethod] Instance already created")
 	}
 
-	log.Println(BasicAuthenticationMethod.Show(*basicAuthenticationMethod))
 	return basicAuthenticationMethod
+}
+
+// GetHealthCheckControlInstance return singleton instance
+func GetHealthCheckControlInstance() *HealthCheckControl {
+	if healthCheckControl == nil {
+		lock.Lock()
+		defer lock.Unlock()
+	}
+
+	if healthCheckControl == nil {
+		log.Println("[HealthCheckControl] Creating new instance")
+
+		currentTime := time.Now()
+
+		healthCheckControl = &HealthCheckControl{
+			status:           false,
+			port:             os.Getenv("HTTP_PORT"),
+			startTime:        currentTime.String(),
+			statusUpdateTime: currentTime.String(),
+		}
+	}
+
+	return healthCheckControl
 }

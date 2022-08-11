@@ -8,8 +8,7 @@ import (
 	"net/http"
 )
 
-// StaticContentHandler
-// Provide static content cloned from repository
+// StaticContentHandler it's a provider static content cloned from repository
 func StaticContentHandler(w http.ResponseWriter, r *http.Request) {
 	repoConfig := utils.GetRepositoryConfigInstance()
 	keys, ok := r.URL.Query()["_branch"]
@@ -29,8 +28,7 @@ func StaticContentHandler(w http.ResponseWriter, r *http.Request) {
 	fs.ServeHTTP(w, r)
 }
 
-// CloneHandler
-// Handler to clone source code from configured repository
+// CloneHandler it's a handler to clone source code from configured repository
 func CloneHandler(w http.ResponseWriter, r *http.Request) {
 	routeConfig := utils.GetRouteConfigInstance()
 	repoConfig := utils.GetRepositoryConfigInstance()
@@ -54,8 +52,7 @@ func CloneHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Last Commit [%s]", commit.ToString())
 }
 
-// PullHandler
-// Handler to update repository from configured repository
+// PullHandler it's a handler to update repository from configured repository
 func PullHandler(w http.ResponseWriter, r *http.Request) {
 	repoConfig := utils.GetRepositoryConfigInstance()
 	commit := utils.PullRepository(repoConfig.GetRepo(), utils.BuildBranchPath(repoConfig.GetTargetFolder(), repoConfig.GetBranch()), repoConfig.GetBranch())
@@ -64,4 +61,18 @@ func PullHandler(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Fprintf(w, "Branch %s pulled successfull \n", repoConfig.GetBranch())
 	fmt.Fprintf(w, "Last commit [%s]", commit.ToString())
+}
+
+// HealthCheckHandler it's a handler to return server status
+func HealthCheckHandler(w http.ResponseWriter, r *http.Request) {
+	healthCheck := utils.GetHealthCheckControlInstance()
+
+	if healthCheck.IsHealthy() {
+		w.WriteHeader(http.StatusOK)
+
+	} else {
+		w.WriteHeader(http.StatusExpectationFailed)
+	}
+
+	fmt.Fprintf(w, healthCheck.JsonHealthCheck())
 }

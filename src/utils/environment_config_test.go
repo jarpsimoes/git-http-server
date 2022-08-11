@@ -58,3 +58,15 @@ func TestGetBasicAuthenticationMethodInstance(t *testing.T) {
 	assert.Equal(t, os.Getenv("ACCESS_USERNAME"), basicAuthInstance1.GetAuth().Username)
 	assert.Equal(t, os.Getenv("ACCESS_TOKEN"), basicAuthInstance1.GetAuth().Password)
 }
+
+func TestGetHealthCheckControlInstance(t *testing.T) {
+	healthCheckControl := GetHealthCheckControlInstance()
+
+	assert.Equal(t, healthCheckControl.status, false)
+	assert.Equal(t, healthCheckControl.IsHealthy(), false)
+
+	healthCheckControl.UpdateState(true)
+
+	assert.Equal(t, healthCheckControl.status, true)
+	assert.Equal(t, healthCheckControl.IsHealthy(), true)
+}
