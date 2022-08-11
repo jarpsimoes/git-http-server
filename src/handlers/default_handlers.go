@@ -67,6 +67,8 @@ func PullHandler(w http.ResponseWriter, r *http.Request) {
 func HealthCheckHandler(w http.ResponseWriter, r *http.Request) {
 	healthCheck := utils.GetHealthCheckControlInstance()
 
+	w.Header().Add("Content-Type", "application/json")
+	
 	if healthCheck.IsHealthy() {
 		w.WriteHeader(http.StatusOK)
 

@@ -62,11 +62,16 @@ func TestGetBasicAuthenticationMethodInstance(t *testing.T) {
 func TestGetHealthCheckControlInstance(t *testing.T) {
 	healthCheckControl := GetHealthCheckControlInstance()
 
-	assert.Equal(t, healthCheckControl.status, false)
+	assert.Equal(t, healthCheckControl.Status, false)
 	assert.Equal(t, healthCheckControl.IsHealthy(), false)
 
 	healthCheckControl.UpdateState(true)
 
-	assert.Equal(t, healthCheckControl.status, true)
+	assert.Equal(t, healthCheckControl.Status, true)
 	assert.Equal(t, healthCheckControl.IsHealthy(), true)
+
+	jsonContent := healthCheckControl.JsonHealthCheck()
+
+	assert.Contains(t, jsonContent, "Status")
+	assert.Contains(t, jsonContent, healthCheckControl.StartTime)
 }

@@ -39,10 +39,10 @@ type BasicAuthenticationMethod struct {
 
 // HealthCheckControl it's a struct to represent health check result
 type HealthCheckControl struct {
-	status           bool
-	port             string
-	startTime        string
-	statusUpdateTime string
+	Status           bool
+	Port             string
+	StartTime        string
+	StatusUpdateTime string
 }
 
 var baseRouteConfigInstance *BaseRouteConfig
@@ -50,10 +50,10 @@ var baseRepositoryConfigInstance *BaseRepositoryConfig
 var basicAuthenticationMethod *BasicAuthenticationMethod
 var healthCheckControl *HealthCheckControl
 
-// UpdateState [HealthCheckControl] it's a function to update status
+// UpdateState [HealthCheckControl] it's a function to update Status
 func (hcc *HealthCheckControl) UpdateState(status bool) {
-	hcc.status = status
-	hcc.statusUpdateTime = time.Now().String()
+	hcc.Status = status
+	hcc.StatusUpdateTime = time.Now().String()
 
 	healthCheckControl = hcc
 }
@@ -67,7 +67,7 @@ func (hcc HealthCheckControl) JsonHealthCheck() string {
 
 // IsHealthy [HealthCheckControl] it's a function to check if server is healthy
 func (hcc HealthCheckControl) IsHealthy() bool {
-	return hcc.status
+	return hcc.Status
 }
 
 // Show (BaseRouteConfig) it's a function print strut content as string
@@ -215,10 +215,10 @@ func GetHealthCheckControlInstance() *HealthCheckControl {
 		currentTime := time.Now()
 
 		healthCheckControl = &HealthCheckControl{
-			status:           false,
-			port:             os.Getenv("HTTP_PORT"),
-			startTime:        currentTime.String(),
-			statusUpdateTime: currentTime.String(),
+			Status:           false,
+			Port:             os.Getenv("HTTP_PORT"),
+			StartTime:        currentTime.String(),
+			StatusUpdateTime: currentTime.String(),
 		}
 	}
 
