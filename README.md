@@ -22,12 +22,14 @@ The GIT-HttpServer only support basic authentication on repositories by protocol
 | PATH_PULL          | Set pull path                                            | _pull                                             | Yes       |
 | PATH_VERSION       | Set get git commit version path                          | _version                                          | Yes       |
 | PATH_WEBHOOK       | Set webhook path                                         | _hook                                             | Yes       |
+| PATH_HEALTH        | Set health check path                                    | _health                                           | Yes       |
 | REPO_BRANCH        | Set default branch to clone content                      | main                                              | Yes       |
 | REPO_TARGET_FOLDER | Set folder to clone source                               | target-git                                        | Yes       |
 | REPO_URL           | Set url as a source origin                               | https://github.com/jarpsimoes/git-http-server.git | Yes       |
-| HTTP_PORT          | Set port to expose content                               | 8081                                              | Yes       |
 | REPO_USERNAME      | Set username or token identifier to basic authentication | N/D                                               | No        |
 | REPO_PASSWORD      | Set password or token to basic authentication            | N/D                                               | No        |
+| HTTP_PORT          | Set port to expose content                               | 8081                                              | Yes       |
+
 
 
 
