@@ -43,9 +43,13 @@ func GetAllCustomPaths() *[]CustomPath {
 			splitVar := strings.Split(variable, "=")
 
 			newPath := strings.ReplaceAll(splitVar[0], "GHS_CUSTOM_PATH_", "")
+
+			if strings.HasPrefix(newPath, "/") {
+				newPath = newPath[1:len(newPath)]
+			}
 			if len(splitVar) > 1 {
 				varObject := CustomPath{
-					path:    newPath,
+					path:    strings.ReplaceAll(newPath, ".", "/"),
 					target:  splitVar[1],
 					rewrite: checkIfEnvVariableIsSet(envVars, fmt.Sprintf("GHS_CUSTOM_REWRITE_%s", newPath)),
 				}
