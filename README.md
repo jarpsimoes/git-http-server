@@ -16,20 +16,21 @@ The GIT-HttpServer only support basic authentication on repositories by protocol
 ## Configuration
 
 ### Environment Variables
-| Name               | Description                                              | Default                                           | Mandatory |
-|--------------------|----------------------------------------------------------|---------------------------------------------------|-----------|
-| PATH_CLONE         | Set clone path                                           | _clone                                            | Yes       |
-| PATH_PULL          | Set pull path                                            | _pull                                             | Yes       |
-| PATH_VERSION       | Set get git commit version path                          | _version                                          | Yes       |
-| PATH_WEBHOOK       | Set webhook path                                         | _hook                                             | Yes       |
-| PATH_HEALTH        | Set health check path                                    | _health                                           | Yes       |
-| REPO_BRANCH        | Set default branch to clone content                      | main                                              | Yes       |
-| REPO_TARGET_FOLDER | Set folder to clone source                               | target-git                                        | Yes       |
-| REPO_URL           | Set url as a source origin                               | https://github.com/jarpsimoes/git-http-server.git | Yes       |
-| REPO_USERNAME      | Set username or token identifier to basic authentication | N/D                                               | No        |
-| REPO_PASSWORD      | Set password or token to basic authentication            | N/D                                               | No        |
-| HTTP_PORT          | Set port to expose content                               | 8081                                              | Yes       |
-
+| Name                      | Description                                              | Default                                           | Mandatory |
+|---------------------------|----------------------------------------------------------|---------------------------------------------------|-----------|
+| PATH_CLONE                | Set clone path                                           | _clone                                            | Yes       |
+| PATH_PULL                 | Set pull path                                            | _pull                                             | Yes       |
+| PATH_VERSION              | Set get git commit version path                          | _version                                          | Yes       |
+| PATH_WEBHOOK              | Set webhook path                                         | _hook                                             | Yes       |
+| PATH_HEALTH               | Set health check path                                    | _health                                           | Yes       |
+| REPO_BRANCH               | Set default branch to clone content                      | main                                              | Yes       |
+| REPO_TARGET_FOLDER        | Set folder to clone source                               | target-git                                        | Yes       |
+| REPO_URL                  | Set url as a source origin                               | https://github.com/jarpsimoes/git-http-server.git | Yes       |
+| REPO_USERNAME             | Set username or token identifier to basic authentication | N/D                                               | No        |
+| REPO_PASSWORD             | Set password or token to basic authentication            | N/D                                               | No        |
+| HTTP_PORT                 | Set port to expose content                               | 8081                                              | Yes       |
+| GHS_CUSTOM_PATH_<path>    | Custom path to work as a proxy server                    | N/D                                               | No        |
+| GHS_CUSTOM_REWRITE_<path> | Set to remove from proxy request base path               | N/D                                               | No        |
 
 ## Implementation
 
@@ -65,6 +66,26 @@ $ docker run \
     -e REPO_BRANCH=[DEFAULT BRANCH] \
     -e REPO_USERNAME=[Token Identifier or Username] \
     -e REPO_PASSWORD=[Password or Token]
+    jarpsimoes/git_http_server
+```
+
+### Implementation with Proxy redirect
+
+Git Http Server support routes to redirect for another URL. Should be defined path to redirect and target. 
+The environment variables must be defined as bellow:
+
+- GHS_CUSTOM_PATH_example/path/redirect: "https://example.org"
+- GHS_CUSTOM_REWRITE_example/path/redirect: true # If you need remove the "example/path/redirect" from the proxy request must be defined:
+
+```shell
+$ docker run \ 
+    -p 8081:8081 \
+    -e REPO_URL=[URL REPOSITORY] \
+    -e REPO_BRANCH=[DEFAULT BRANCH] \
+    -e REPO_USERNAME=[Token Identifier or Username] \
+    -e REPO_PASSWORD=[Password or Token] \
+    -e GHS_CUSTOM_PATH_google/redirect=https://www.google.pt
+    -e GHS_CUSTOM_REWRITE_google/redirect=true
     jarpsimoes/git_http_server
 ```
 

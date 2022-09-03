@@ -47,6 +47,7 @@ func GetAllCustomPaths() *[]CustomPath {
 			if strings.HasPrefix(newPath, "/") {
 				newPath = newPath[1:len(newPath)]
 			}
+
 			if len(splitVar) > 1 {
 				varObject := CustomPath{
 					path:    strings.ReplaceAll(newPath, ".", "/"),
