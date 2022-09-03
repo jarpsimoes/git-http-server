@@ -143,10 +143,21 @@ func PullRepository(repoURL string, target string, branch string) *CommitData {
 		return nil
 	}
 
-	w.Pull(&git.PullOptions{
+	auth := GetBasicAuthenticationMethodInstance()
+	var authResult http.BasicAuth
+
+	if auth.BasicAuthAvailable() {
+		authResult = auth.GetAuth()
+	}
+
+	errPull := w.Pull(&git.PullOptions{
+		Auth:          &authResult,
 		RemoteName:    "origin",
 		ReferenceName: plumbing.ReferenceName(fmt.Sprintf("refs/heads/%s", branch)),
 	})
+	if errPull != nil {
+		ErrorCheck(errPull)
+	}
 
 	return getCommit(po)
 }
