@@ -6,6 +6,9 @@ import (
 	"html"
 	"log"
 	"net/http"
+	"net/http/httputil"
+	"net/url"
+	"strings"
 )
 
 // StaticContentHandler it's a provider static content cloned from repository
@@ -77,4 +80,25 @@ func HealthCheckHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Fprintf(w, healthCheck.JSONHealthCheck())
+}
+
+// ServeReverseProxy reverse proxy handler
+// Handle custom paths request
+func ServeReverseProxy(w http.ResponseWriter, r *http.Request) {
+	path := r.URL.Path
+
+	exists, customPath := utils.FindPath(path)
+
+	if !exists {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+	targetUrl, _ := url.Parse(customPath.GetTarget())
+
+	if customPath.IsRewrite() {
+		r.URL.Path = strings.ReplaceAll(path, fmt.Sprintf("/%s", customPath.GetPath()), "")
+	}
+	proxy := httputil.NewSingleHostReverseProxy(targetUrl)
+
+	proxy.ServeHTTP(w, r)
 }
