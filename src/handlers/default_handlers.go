@@ -14,6 +14,7 @@ import (
 // StaticContentHandler it's a provider static content cloned from repository
 func StaticContentHandler(w http.ResponseWriter, r *http.Request) {
 	repoConfig := utils.GetRepositoryConfigInstance()
+
 	keys, ok := r.URL.Query()["_branch"]
 
 	branch := repoConfig.GetBranch()
@@ -25,6 +26,15 @@ func StaticContentHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	basePath := utils.BuildBranchPath(repoConfig.GetTargetFolder(), branch)
+
+	if repoConfig.GetRootFolder() != "" {
+		basePath = fmt.Sprintf("%s/%s", basePath, repoConfig.GetRootFolder())
+
+		if strings.Contains(basePath, "//") {
+			basePath = strings.ReplaceAll(basePath, "//", "/")
+		}
+	}
+
 	log.Printf("[Request] Path %s", basePath)
 
 	fs := http.FileServer(http.Dir(basePath))
@@ -64,6 +74,15 @@ func PullHandler(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Fprintf(w, "Branch %s pulled successfull \n", repoConfig.GetBranch())
 	fmt.Fprintf(w, "Last commit [%s]", commit.ToString())
+}
+
+// FeatureNotEnabled it's a handler to response feature not enabled
+func FeatureNotEnabled(w http.ResponseWriter, r *http.Request) {
+
+	w.WriteHeader(http.StatusNotAcceptable)
+
+	fmt.Fprintf(w, "Operation %s not supported with present configuration \n", r.URL)
+
 }
 
 // HealthCheckHandler it's a handler to return server status

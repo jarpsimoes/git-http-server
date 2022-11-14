@@ -16,10 +16,15 @@ func main() {
 	repo := utils.GetRepositoryConfigInstance()
 	customPaths := utils.GetCustomPathsInstance()
 
-	utils.CloneRepository(repo.GetRepo(), repo.GetBranch(), repo.GetTargetFolder(), true)
+	if repo.GetRepo() != "" {
+		utils.CloneRepository(repo.GetRepo(), repo.GetBranch(), repo.GetTargetFolder(), true)
+		http.HandleFunc(fmt.Sprintf("/%s/", routeConfig.GetClone()), handlers.CloneHandler)
+		http.HandleFunc(fmt.Sprintf("/%s/", routeConfig.GetPull()), handlers.PullHandler)
+	} else {
+		http.HandleFunc(fmt.Sprintf("/%s/", routeConfig.GetClone()), handlers.FeatureNotEnabled)
+		http.HandleFunc(fmt.Sprintf("/%s/", routeConfig.GetPull()), handlers.FeatureNotEnabled)
+	}
 
-	http.HandleFunc(fmt.Sprintf("/%s/", routeConfig.GetClone()), handlers.CloneHandler)
-	http.HandleFunc(fmt.Sprintf("/%s/", routeConfig.GetPull()), handlers.PullHandler)
 	http.HandleFunc(fmt.Sprintf("/%s/", routeConfig.GetHealthCheck()), handlers.HealthCheckHandler)
 	if len(*customPaths) > 0 {
 

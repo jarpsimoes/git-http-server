@@ -20,7 +20,7 @@ ENV PATH_WEBHOOK "_hook"
 ENV PATH_HEALTH "_health"
 ENV REPO_BRANCH "main"
 ENV REPO_TARGET_FOLDER "target-git"
-ENV REPO_URL "https://github.com/jarpsimoes/git-http-server.git"
+ENV REPO_URL ""
 ENV HTTP_PORT 8081
 
 RUN mkdir -p ${APP_HOME}

@@ -28,6 +28,7 @@ type BaseRepositoryConfig struct {
 	repoURL      string
 	branch       string
 	targetFolder string
+	rootFolder   string
 }
 
 // BasicAuthenticationMethod it's a struct to represent authorization configuration
@@ -121,6 +122,11 @@ func (brc BaseRepositoryConfig) GetTargetFolder() string {
 	return brc.targetFolder
 }
 
+// GetRootFolder (baseRepositoryConfig) it's a method to get root folder
+func (brc BaseRepositoryConfig) GetRootFolder() string {
+	return brc.rootFolder
+}
+
 // Show (BasicAuthenticationMethod) it's a function print strut content as string
 func (bam BasicAuthenticationMethod) Show() string {
 	return fmt.Sprintf("username=%v, password=******", bam.username)
@@ -149,7 +155,6 @@ func GetRouteConfigInstance() *BaseRouteConfig {
 		if baseRouteConfigInstance == nil {
 			log.Println("[BaseRouteConfig] Creating new instance ")
 
-			// TODO Replace with Environment Variables
 			baseRouteConfigInstance = &BaseRouteConfig{
 				clonePath:          os.Getenv("PATH_CLONE"),
 				webhookPath:        os.Getenv("PATH_WEBHOOK"),
@@ -157,6 +162,7 @@ func GetRouteConfigInstance() *BaseRouteConfig {
 				versionPath:        os.Getenv("PATH_VERSION"),
 				healthCheckControl: os.Getenv("PATH_HEALTH"),
 			}
+
 		}
 	}
 	return baseRouteConfigInstance
@@ -175,6 +181,7 @@ func GetRepositoryConfigInstance() *BaseRepositoryConfig {
 				repoURL:      os.Getenv("REPO_URL"),
 				branch:       os.Getenv("REPO_BRANCH"),
 				targetFolder: os.Getenv("REPO_TARGET_FOLDER"),
+				rootFolder:   os.Getenv("FOLDER_ROOT"),
 			}
 
 		}
