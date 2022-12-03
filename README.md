@@ -44,7 +44,7 @@ $ docker run \
     -p 8081:8081 \
     -e REPO_URL=[URL REPOSITORY] \
     -e REPO_BRANCH=[DEFAULT BRANCH] \
-    jarpsimoes/git_http_server
+    ghcr.io/jarpsimoes/git_http_server
 ```
 Test content
 ```shell
@@ -68,7 +68,7 @@ $ docker run \
     -e REPO_BRANCH=[DEFAULT BRANCH] \
     -e REPO_USERNAME=[Token Identifier or Username] \
     -e REPO_PASSWORD=[Password or Token]
-    jarpsimoes/git_http_server
+    ghcr.io/jarpsimoes/git_http_server
 ```
 
 ### Implementation with Proxy redirect
@@ -88,7 +88,7 @@ $ docker run \
     -e REPO_PASSWORD=[Password or Token] \
     -e GHS_CUSTOM_PATH_google/redirect=https://www.google.pt
     -e GHS_CUSTOM_REWRITE_google/redirect=true
-    jarpsimoes/git_http_server
+    ghcr.io/jarpsimoes/git_http_server
 ```
 
 Test content
@@ -134,7 +134,7 @@ spec:
             - name: REPO_URL
               value: [REPOSITORY_URL]
           name: git-http-server
-          image: jarpsimoes/git_http_server:v0.91749682
+          image: ghcr.io/jarpsimoes/git_http_server:v0.0.1-beta
           imagePullPolicy: Always
           livenessProbe:
             httpGet:
