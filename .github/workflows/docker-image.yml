@@ -42,7 +42,7 @@ jobs:
           fail_ci_if_error: true 
                   
   build:
-    #if: startsWith(github.ref, 'refs/tags/')
+    if: startsWith(github.ref, 'refs /tags/')
     runs-on: ubuntu-latest
     needs: coverage
     steps:
@@ -51,8 +51,8 @@ jobs:
       - name: Docker Login
         uses: docker/login-action@v2.1.0
         with:
-          server: ghcr.io
-          username: ${{ secrets.DOCKER_REGISTRY_GITHUB_TOKEN }}
+          registry: ghcr.io
+          username: ${{ secrets.DOCKER_REGISTRY_GITHUB_USERNAME }}
           password: ${{ secrets.DOCKER_REGISTRY_GITHUB_TOKEN }}
 
       - name: Docker Tag
