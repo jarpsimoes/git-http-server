@@ -25,6 +25,7 @@ type BaseRouteConfig struct {
 // BaseRepositoryConfig it's a struct to represent repository configuration
 // Singleton
 type BaseRepositoryConfig struct {
+	enabled      bool
 	repoURL      string
 	branch       string
 	targetFolder string
@@ -178,6 +179,7 @@ func GetRepositoryConfigInstance() *BaseRepositoryConfig {
 			log.Println("[BaseRepositoryConfigInstance] Creating new instance")
 
 			baseRepositoryConfigInstance = &BaseRepositoryConfig{
+				enabled:      os.Getenv("REPO_URL") != "",
 				repoURL:      os.Getenv("REPO_URL"),
 				branch:       os.Getenv("REPO_BRANCH"),
 				targetFolder: os.Getenv("REPO_TARGET_FOLDER"),

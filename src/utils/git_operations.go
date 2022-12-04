@@ -39,7 +39,14 @@ func NewCommitData(commitObject *object.Commit) *CommitData {
 // Should be defined as parameter the targetFolder name and branch
 // Return pattern as _[target_folder]_[target_branch] without slash's
 func BuildBranchPath(targetFolder string, branch string) string {
-	return fmt.Sprintf("_%s_%v", targetFolder, strings.ReplaceAll(branch, "/", "_"))
+	baseRepositoryConfigInstance := GetRepositoryConfigInstance()
+
+	if baseRepositoryConfigInstance.enabled {
+		return fmt.Sprintf("_%s_%v", targetFolder, strings.ReplaceAll(branch, "/", "_"))
+	} else {
+		return fmt.Sprintf(targetFolder)
+	}
+
 }
 
 // CheckContentExists it's function to check if exists content
