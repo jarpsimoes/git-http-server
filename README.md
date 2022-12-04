@@ -56,6 +56,16 @@ Update Repository
 $ curl http://localhost:8080/_pull
 ````
 
+### Implementation only as a http server ([To support angular operator](https://github.com/jarpsimoes/git-http-server-operator))
+
+```shell
+$ docker run \ 
+    -p 8081:8081 \
+    -e REPO_URL="" \
+    ghcr.io/jarpsimoes/git_http_server
+```
+
+
 ### Implementation with Basic Authentication
 
 The implementation with basic authentication can be used with username and password method, or PAT(Personal Access Token) method (like Gitlab Token).
