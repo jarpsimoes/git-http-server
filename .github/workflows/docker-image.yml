@@ -29,16 +29,15 @@ jobs:
       - name: Calc coverage
         run: |
           cd src
+          go get github.com/axw/gocov/gocov
+          go get github.com/AlekSi/gocov-xml
           go test -v ./... -covermode=count -coverprofile=coverage.out
-      - name: Convert coverage.out to coverage.lcov
-        uses: jandelgado/gcov2lcov-action@v1.0.6
-        with:
-          working-directory: src
+          gocov convert coverage.out | gocov-xml > coverage.xml
       - name: Codecov Reports
         uses: codecov/codecov-action@v3.1.0
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: src/coverage.lcov
+          files: src/coverage.xml
           fail_ci_if_error: true 
                   
   build:
