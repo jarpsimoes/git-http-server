@@ -6,6 +6,8 @@ import (
 	"github.com/go-git/go-git/v5/plumbing/transport/http"
 	"log"
 	"os"
+	"path/filepath"
+	"runtime"
 	"sync"
 	"time"
 )
@@ -51,6 +53,11 @@ var baseRouteConfigInstance *BaseRouteConfig
 var baseRepositoryConfigInstance *BaseRepositoryConfig
 var basicAuthenticationMethod *BasicAuthenticationMethod
 var healthCheckControl *HealthCheckControl
+var pathSecurityCheck *PathSecurityCheck
+var (
+	_, b, _, _ = runtime.Caller(0)
+	basePath   = filepath.Dir(b)
+)
 
 // UpdateState [HealthCheckControl] it's a function to update Status
 func (hcc *HealthCheckControl) UpdateState(status bool) {
@@ -183,9 +190,16 @@ func GetRepositoryConfigInstance() *BaseRepositoryConfig {
 				repoURL:      os.Getenv("REPO_URL"),
 				branch:       os.Getenv("REPO_BRANCH"),
 				targetFolder: os.Getenv("REPO_TARGET_FOLDER"),
-				rootFolder:   os.Getenv("FOLDER_ROOT"),
+				rootFolder:   basePath,
 			}
 
+			if pathSecurityCheck.IsValidPath(baseRepositoryConfigInstance.targetFolder) {
+				log.Printf("[BaseRepositoryConfigInstance] Target folder %v is valid", baseRepositoryConfigInstance.targetFolder)
+			} else {
+				log.Printf("[BaseRepositoryConfigInstance] Target folder %v is invalid", baseRepositoryConfigInstance.targetFolder)
+				log.Printf("[BaseRepositoryConfigInstance] Will be changed to target")
+				baseRepositoryConfigInstance.targetFolder = "target_folder"
+			}
 		}
 	}
 
