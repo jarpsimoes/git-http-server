@@ -117,7 +117,17 @@ func ServeReverseProxy(w http.ResponseWriter, r *http.Request) {
 	if customPath.IsRewrite() {
 		r.URL.Path = strings.ReplaceAll(path, fmt.Sprintf("/%s", customPath.GetPath()), "")
 	}
+
 	proxy := httputil.NewSingleHostReverseProxy(targetUrl)
+	proxy.Director = func(req *http.Request) {
+		req.Header = r.Header
+		req.Host = targetUrl.Host
+		req.URL.Scheme = targetUrl.Scheme
+		req.URL.Host = targetUrl.Host
+		req.URL.Path = r.URL.Path
+
+		log.Printf("Proxy to: %s \n", req.URL.String())
+	}
 
 	proxy.ServeHTTP(w, r)
 }
