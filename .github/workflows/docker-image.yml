@@ -23,22 +23,23 @@ jobs:
         if: success()
         uses: actions/setup-go@v3.4.0
         with:
-          go-version: 1.17.x
+          go-version: 1.18.x
       - name: Checkout code
         uses: actions/checkout@v3.1.0
       - name: Calc coverage
         run: |
           cd src
           go test -v ./... -covermode=count -coverprofile=coverage.out
-      - name: Convert coverage.out to coverage.lcov
-        uses: jandelgado/gcov2lcov-action@v1.0.6
-        with:
-          working-directory: src
+          go get github.com/axw/gocov/gocov
+          go get github.com/AlekSi/gocov-xml
+          go install github.com/axw/gocov/gocov
+          go install github.com/AlekSi/gocov-xml
+          gocov convert coverage.out | gocov-xml > coverage.xml
       - name: Codecov Reports
         uses: codecov/codecov-action@v3.1.0
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: src/coverage.lcov
+          files: src/coverage.xml
           fail_ci_if_error: true 
                   
   build:

@@ -9,6 +9,15 @@ The content must be provided from a git repository.
 Every times an application is started, the configured repository is cloned on 
 selected branch (in variable REPO_BRANCH) and can be pulled new version on defined PATH_PULL.
 
+## RELEASE NOTES: v0.0.3-alpha
+
+| Feature | Description                                       |
+|---------|---------------------------------------------------|
+| Done    | Add support to proxy redirect with HTTPS backends |
+| FIX     | Bump golang.org/x/text from 0.3.7 to 0.3.8        |
+
+
+
 ## Authentication Methods
 
 The GIT-HttpServer only support basic authentication on repositories by protocol HTTPS
