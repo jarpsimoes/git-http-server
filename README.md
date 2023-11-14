@@ -11,9 +11,10 @@ selected branch (in variable REPO_BRANCH) and can be pulled new version on defin
 
 ## RELEASE NOTES: v0.0.3-alpha
 
-| Feature | Description                   |
-|---------|-------------------------------|
-| Done    | Add support to proxy redirect |
+| Feature | Description                                       |
+|---------|---------------------------------------------------|
+| Done    | Add support to proxy redirect with HTTPS backends |
+| FIX     | Bump golang.org/x/text from 0.3.7 to 0.3.8        |
 
 
 
