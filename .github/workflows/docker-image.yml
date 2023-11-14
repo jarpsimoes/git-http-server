@@ -29,7 +29,8 @@ jobs:
       - name: Calc coverage
         run: |
           cd src
-          go mod download
+          go get github.com/jbenet/go-context/io@v0.0.0-20150711004518-d14ea06fba99
+          go get github.com/go-git/go-git/v5/plumbing/transport/ssh@v5.4.2
           go get github.com/axw/gocov/gocov
           go get github.com/AlekSi/gocov-xml
           go test -v ./... -covermode=count -coverprofile=coverage.out
