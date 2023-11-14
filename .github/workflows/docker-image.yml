@@ -27,6 +27,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3.1.0
       - name: Calc coverage
+        env:
+          ACCESS_TOKEN: ${{ secrets.GIT_ACCESS_TOKEN_TESTS }}
+          ACCESS_USERNAME: html_sample
         run: |
           cd src
           go test -v ./... -covermode=count -coverprofile=coverage.out
