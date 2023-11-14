@@ -10,7 +10,7 @@ Every times an application is started, the configured repository is cloned on
 selected branch (in variable REPO_BRANCH) and can be pulled new version on defined PATH_PULL.
 
 _**RELEASE NOTES: v0.0.3-alpha**_
-  - Add Support for backend https
+-  Add Support for backend https
 
 ## Authentication Methods
 
