@@ -9,7 +9,7 @@ The content must be provided from a git repository.
 Every times an application is started, the configured repository is cloned on 
 selected branch (in variable REPO_BRANCH) and can be pulled new version on defined PATH_PULL.
 
-_**RELEASE NOTES: v0.0.3-alpha**_
+## RELEASE NOTES: v0.0.3-alpha
 
 | Feature | Description                   |
 |---------|-------------------------------|
