@@ -43,6 +43,17 @@ func TestGetRepositoryConfigInstance(t *testing.T) {
 	assert.Equal(t, "https://test.com/repo.git", repositoryConfigInstance1.GetRepo(), "Check repo url")
 	assert.Equal(t, "main", repositoryConfigInstance1.GetBranch(), "Check repo url")
 	assert.Equal(t, "test1", repositoryConfigInstance1.GetTargetFolder(), "Check repo url")
+
+}
+func TestGetRepositoryConfigInstanceInvalid(t *testing.T) {
+	baseRepositoryConfigInstance = nil
+
+	os.Setenv("REPO_URL", "https://test.com/repo.git")
+	os.Setenv("REPO_BRANCH", "main")
+	os.Setenv("REPO_TARGET_FOLDER", "test1/test2")
+
+	repositoryConfigInstance2 := GetRepositoryConfigInstance()
+	assert.Equal(t, "target_folder", repositoryConfigInstance2.GetTargetFolder(), "Check repo url")
 }
 func TestGetBasicAuthenticationMethodInstance(t *testing.T) {
 	os.Setenv("REPO_USERNAME", os.Getenv("ACCESS_USERNAME"))
