@@ -11,8 +11,6 @@ on:
     branches: [ "main" ]
 
 env:
-  ACCESS_TOKEN: ${{ secrets.GIT_ACCESS_TOKEN_TESTS }}
-  ACCESS_USERNAME: html_sample
   CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_TOKEN }}
   COVERALLS_REPO_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 jobs:
@@ -27,6 +25,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3.1.0
       - name: Calc coverage
+        env:
+          ACCESS_TOKEN: ${{ secrets.GIT_ACCESS_TOKEN_TESTS }}
+          ACCESS_USERNAME: html_sample
         run: |
           cd src
           go test -v ./... -covermode=count -coverprofile=coverage.out
