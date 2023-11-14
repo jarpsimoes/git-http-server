@@ -29,6 +29,7 @@ jobs:
       - name: Calc coverage
         run: |
           cd src
+          go mod download
           go get github.com/axw/gocov/gocov
           go get github.com/AlekSi/gocov-xml
           go test -v ./... -covermode=count -coverprofile=coverage.out
