@@ -50,4 +50,8 @@ func TestFindPath(t *testing.T) {
 	assert.True(t, path2.GetTarget() == "https://storage.gra.cloud.ovh.net/v1/AUTH_ed33ec9e34c64b54aca49d6fcb6dc4c8/infordoc")
 	assert.True(t, path2.IsRewrite() == false)
 
+	result3, _ := FindPath("/images/test/digilex-infordoc-img")
+
+	assert.False(t, result3)
+
 }
