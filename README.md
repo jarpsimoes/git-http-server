@@ -14,13 +14,14 @@ selected branch (in variable REPO_BRANCH) and can be pulled new version on defin
 | Feature | Description                                                                                                        |
 |---------|--------------------------------------------------------------------------------------------------------------------|
 | Done    | Add support to proxy redirect with HTTPS backends                                                                  |
+| Done    | Add CodeQL definitions                                                                                             |
 | FIXED   | Bump golang.org/x/text from 0.3.7 to 0.3.8                                                                         |
 | FIXED   | Bump github.com/stretchr/testify from 1.7.0 to 1.7.1                                                               |
 | FIXED   | Bump golang.org/x/sys from 0.0.0-20220209214540-3681064d5158 to 0.1.0                                              |
 | FIXED   | Bump golang.org/x/crypto from 0.0.0-20220214200702-86341886e292 to 0.1.0                                           |
 | FIXED   | Bump golang.org/x/net from 0.0.0-20220127200216-cd36cc0744dd to 0.17.0 in                                          |
 | FIXED   | Vulnerability issue Uncontrolled data used in path [Issue](https://github.com/jarpsimoes/git-http-server/issues/8) |
-
+| FIXED   | Root path issue                                                                                                    |
 
 ## Authentication Methods
 
