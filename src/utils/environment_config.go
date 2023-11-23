@@ -6,8 +6,6 @@ import (
 	"github.com/go-git/go-git/v5/plumbing/transport/http"
 	"log"
 	"os"
-	"path/filepath"
-	"runtime"
 	"sync"
 	"time"
 )
@@ -54,10 +52,7 @@ var baseRepositoryConfigInstance *BaseRepositoryConfig
 var basicAuthenticationMethod *BasicAuthenticationMethod
 var healthCheckControl *HealthCheckControl
 var pathSecurityCheck *PathSecurityCheck
-var (
-	_, b, _, _ = runtime.Caller(0)
-	basePath   = filepath.Dir(b)
-)
+var basePath, _ = os.Getwd()
 
 // UpdateState [HealthCheckControl] it's a function to update Status
 func (hcc *HealthCheckControl) UpdateState(status bool) {
