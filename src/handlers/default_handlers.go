@@ -28,7 +28,8 @@ func StaticContentHandler(w http.ResponseWriter, r *http.Request) {
 	basePath := utils.BuildBranchPath(repoConfig.GetTargetFolder(), branch)
 
 	if repoConfig.GetRootFolder() != "" {
-		basePath = fmt.Sprintf("%s/%s", basePath, repoConfig.GetRootFolder())
+
+		basePath = fmt.Sprintf("%s/%s", repoConfig.GetRootFolder(), basePath)
 
 		if strings.Contains(basePath, "//") {
 			basePath = strings.ReplaceAll(basePath, "//", "/")
